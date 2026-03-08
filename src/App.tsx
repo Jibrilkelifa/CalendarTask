@@ -1,4 +1,5 @@
 import './App.css'
+import Calendar from './components/calendar/Calendar'
 import { generateMonthGrid } from './utils/calendarUtils'
 
 function App() {
@@ -7,11 +8,7 @@ function App() {
 
   console.log(days)
 
-  return (
-    <div>
-      Calendar Engine Ready
-    </div>
-  )
+  return <Calendar />
 }
 
 export default App
