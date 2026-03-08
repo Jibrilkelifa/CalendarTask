@@ -9,6 +9,9 @@ import type { Holiday } from "../../features/holidays/holidayTypes"
 import { fetchHolidays } from "../../features/holidays/holidayApi"
 import { DndContext } from "@dnd-kit/core"
 import type { DragEndEvent } from "@dnd-kit/core"
+import { getTasks, createTask, updateTask } from "../../features/tasks/taskApi"
+import { addMonths, subMonths } from "date-fns"
+import CalendarHeader from "./CalendarHeader"
 
 const Grid = styled.div`
   display: grid;
@@ -17,66 +20,89 @@ const Grid = styled.div`
 `
 
 export default function CalendarGrid() {
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: "1", title: "Finish report", date: "2025-03-18", order: 0 },
-    { id: "2", title: "Team meeting", date: "2025-03-18", order: 1 }
-  ])
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [currentDate, setCurrentDate] = useState(new Date())
 
   const [holidays, setHolidays] = useState<Holiday[]>([])
-  const currentDate = new Date(2025, 11) // March 2025
 
-  useEffect(() => {
-    fetchHolidays(currentDate.getFullYear())
-      .then(setHolidays)
-      .catch(console.error)
-  }, [currentDate])
+useEffect(() => {
+  getTasks().then(setTasks)
+}, [])
 
-  function addTask(title: string, date: string) {
-    const newTask: Task = {
-      id: crypto.randomUUID(),
-      title,
-      date,
-      order: 0
-    }
-    setTasks(prev => [...prev, newTask])
+useEffect(() => {
+  fetchHolidays(currentDate.getFullYear())
+    .then(setHolidays)
+    .catch(console.error)
+}, [currentDate])
+
+function nextMonth() {
+  setCurrentDate(prev => addMonths(prev, 1))
+}
+
+function prevMonth() {
+  setCurrentDate(prev => subMonths(prev, 1))
+}
+
+  async function addTask(title: string, date: string) {
+  const newTask: Task = {
+    id: crypto.randomUUID(),
+    title,
+    date,
+    order: 0
   }
+  await createTask(newTask)
+  setTasks(prev => [...prev, newTask])
+}
 
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event
-    if (!over) return
 
-    const taskId = active.id as string
-    const newDate = over.id as string
+async function handleDragEnd(event: DragEndEvent) {
+  const { active, over } = event
+  if (!over) return
 
-    setTasks(prev =>
-      prev.map(task =>
-        task.id === taskId ? { ...task, date: newDate } : task
-      )
-    )
-  }
+  const taskId = active.id as string
+  const newDate = over.id as string
+
+  const task = tasks.find(t => t.id === taskId)
+  if (!task) return
+
+  const updated = { ...task, date: newDate }
+  await updateTask(updated)
+
+  setTasks(prev =>
+    prev.map(t => (t.id === taskId ? updated : t))
+  )
+}
+
 
   const days = generateMonthGrid(currentDate)
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      <Grid>
-        {days.map(day => {
-          const dayString = format(day.date, "yyyy-MM-dd")
-          const dayTasks = tasks.filter(task => task.date === dayString)
-          const holiday = holidays.find(h => h.date === dayString)
+  <DndContext onDragEnd={handleDragEnd}>
+    <CalendarHeader
+      currentDate={currentDate}
+      onPrevMonth={prevMonth}
+      onNextMonth={nextMonth}
+    />
 
-          return (
-            <DayCell
-              key={day.date.toISOString()}
-              date={day.date}
-              isCurrentMonth={day.isCurrentMonth}
-              tasks={dayTasks}
-              onAddTask={addTask}
-              holiday={holiday}
-            />
-          )
-        })}
-      </Grid>
-    </DndContext>
-  )
+    <Grid>
+      {days.map(day => {
+        const dayString = format(day.date, "yyyy-MM-dd")
+        const dayTasks = tasks.filter(task => task.date === dayString)
+        const holiday = holidays.find(h => h.date === dayString)
+
+        return (
+          <DayCell
+            key={day.date.toISOString()}
+            date={day.date}
+            isCurrentMonth={day.isCurrentMonth}
+            tasks={dayTasks}
+            onAddTask={addTask}
+            holiday={holiday}
+          />
+        )
+      })}
+    </Grid>
+  </DndContext>
+)
+
 }

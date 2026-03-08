@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import CalendarHeader from "./CalendarHeader"
 import WeekDays from "./WeekDays"
 import CalendarGrid from "./CalendarGrid"
 
@@ -13,7 +12,6 @@ const Container = styled.div`
 export default function Calendar() {
   return (
     <Container>
-      <CalendarHeader />
       <WeekDays />
       <CalendarGrid />
     </Container>
