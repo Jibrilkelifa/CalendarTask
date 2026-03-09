@@ -6,13 +6,13 @@ type Props = {
 }
 
 const Container = styled.div`
-  margin-bottom: 16px;
+  margin-bottom: 6px;
   position: relative;
 `
 
 const Input = styled.input`
   width: 100%;
-  padding: 10px 40px 10px 12px;   // ✅ extra space for icon
+  padding: 10px 40px 10px 12px;
   border: 1px solid #e5e7eb;
   border-radius: 6px;
   font-size: 14px;
@@ -22,9 +22,10 @@ const Input = styled.input`
     outline: none;
     border-color: #3b82f6;
     background: #ffffff;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
   }
 `
+
 
 const Icon = styled.span`
   position: absolute;
@@ -32,7 +33,7 @@ const Icon = styled.span`
   top: 50%;
   transform: translateY(-50%);
   font-size: 16px;
-  color: #9ca3af;
+  color: #3b82f6;
   cursor: pointer;
 
   &:hover {

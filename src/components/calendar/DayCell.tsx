@@ -20,25 +20,22 @@ type Props = {
 }
 
 const Cell = styled.div<{ $current: boolean }>`
-  border-right: 1px solid #e5e7eb;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 6px;
-  background: ${({ $current }) => ($current ? "white" : "#f9fafb")};
+  border-right: 1px solid #d6d6d6;
+  border-bottom: 1px solid #d6d6d6;
+  padding: 8px;
+  background: ${({ $current }) => ($current ? "#e9e9e9" : "#f2f2f2")};
   display: flex;
   flex-direction: column;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #f3f4f6;   
-  }
+  position: relative;
 `
 
 const DateNumber = styled.div`
-  font-size: 12px;
-  color: #6b7280;
-  margin-bottom: 6px;
+  font-size: 14px;
+  color: #666;
   font-weight: 500;
+  margin-bottom: 4px;
 `
+
 
 const HolidayLabel = styled.div`
   font-size: 10px;
@@ -52,7 +49,11 @@ const TasksContainer = styled.div`
   flex-direction: column;
   gap: 6px;   
 `
-
+const CardCount = styled.span`
+  font-size: 12px;
+  color: #888;
+  margin-left: 4px;
+`
 const TaskInput = styled.input`
   width: 100%;
   border: none;
@@ -82,7 +83,10 @@ export default function DayCell({ date, isCurrentMonth, tasks, onAddTask, holida
 
   return (
     <Cell ref={setNodeRef} $current={isCurrentMonth}>
-      <DateNumber>{format(date, "d")}</DateNumber>
+      <DateNumber>
+  {format(date, "d")}
+  {tasks.length > 0 && <CardCount>{tasks.length} card</CardCount>}
+</DateNumber>
 
       {holiday && <HolidayLabel>{holiday.name}</HolidayLabel>}
 

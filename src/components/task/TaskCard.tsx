@@ -10,15 +10,26 @@ type Props = {
 }
 
 const Card = styled.div`
-  background: #ffffff;
-  color: #111827;
-  padding: 6px 8px;
-  border-radius: 6px;
+  background: #f7f7f7;
+  color: #333;
+  padding: 6px;
+  border-radius: 3px;
   font-size: 13px;
-  cursor: pointer;
+  cursor: grab;
   user-select: none;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  border-left: 4px solid #3b82f6;   // ✅ colored accent
+  border: 1px solid #ddd;
+`
+const Labels = styled.div`
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+`
+
+const Label = styled.div<{ color: string }>`
+  width: 28px;
+  height: 6px;
+  border-radius: 2px;
+  background: ${({ color }) => color};
 `
 
 
@@ -43,12 +54,18 @@ const {
 
   return (
     <Card
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-    >
-      {task.title}
-    </Card>
+  ref={setNodeRef}
+  style={style}
+  {...attributes}
+  {...listeners}
+>
+  <Labels>
+    <Label color="#61bd4f" />
+    <Label color="#f2d600" />
+    <Label color="#ff9f1a" />
+  </Labels>
+
+  {task.title}
+</Card>
   )
 }
