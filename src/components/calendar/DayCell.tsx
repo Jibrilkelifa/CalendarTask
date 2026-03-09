@@ -26,6 +26,7 @@ const Cell = styled.div<{ $current: boolean }>`
   display: flex;
   flex-direction: column;
   position: relative;
+  
 `
 
 const DateNumber = styled.div`

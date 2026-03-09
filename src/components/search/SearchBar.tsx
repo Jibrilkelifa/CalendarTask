@@ -6,15 +6,16 @@ type Props = {
 }
 
 const Container = styled.div`
-  margin-bottom: 6px;
+  margin-bottom: 0;
+  border-bottom: 1px solid #e5e7eb;
   position: relative;
 `
 
 const Input = styled.input`
-  width: 100%;
+  width: 95%;
   padding: 10px 40px 10px 12px;
   border: 1px solid #e5e7eb;
-  border-radius: 6px;
+  border-radius: 3px;
   font-size: 14px;
   background: #f9fafb;
 

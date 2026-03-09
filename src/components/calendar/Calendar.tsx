@@ -14,7 +14,6 @@ import type { Task } from "../../features/tasks/types/taskTypes"
 import type { Holiday } from "../../features/holidays/holidayTypes"
 
 const Container = styled.div`
-  width: 100%;
   height: 100vh;
   background: #ffffff;
   display: flex;
@@ -22,8 +21,20 @@ const Container = styled.div`
 `
 
 const Inner = styled.div`
-  padding: 10px;
+  flex: 1;            
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 `
+const CalendarWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;          
+  max-width: 1200px;    
+  margin: 0 auto;     
+`
+
+
 
 export default function Calendar() {
 
@@ -70,7 +81,7 @@ export default function Calendar() {
 
   return (
     <Container>
-
+      <CalendarWrapper>
       <Inner>
         <SearchBar value={search} onChange={setSearch} />
 
@@ -90,7 +101,7 @@ export default function Calendar() {
           setTasks={setTasks}
         />
       </Inner>
-
+      </CalendarWrapper>
     </Container>
   )
 }

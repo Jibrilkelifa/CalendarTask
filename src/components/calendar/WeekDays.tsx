@@ -13,6 +13,7 @@ const Day = styled.div`
   font-size: 12px;
   font-weight: 600;
   color: #374151;
+  width: 100%;
 `
 
 

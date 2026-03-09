@@ -11,25 +11,35 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
+  padding: 12px 16px;
   border-bottom: 1px solid #e5e7eb;
   background: #fafafa;
 `
 
 const Button = styled.button`
-  width: 32px;
-  height: 32px;
-  border: 1px solid #e5e7eb;
-  background: white;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: #f3f4f6;        // light gray background
   color: #374151;
-  border-radius: 50%;   // circular
+  border-radius: 50%;         // circular
   cursor: pointer;
-  font-size: 16px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 
   &:hover {
-    background: #f3f4f6;
+    background: #3b82f6;      // blue highlight
+    color: #ffffff;           // white arrow
+  }
+
+  &:active {
+    transform: scale(0.95);   // click feedback
   }
 `
+
 
 const Title = styled.h2`
   margin: 0;
