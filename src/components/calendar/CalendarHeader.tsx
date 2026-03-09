@@ -11,28 +11,39 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fafafa;
 `
 
 const Button = styled.button`
-  padding: 6px 10px;
-  border: none;
-  background: #3b82f6;
-  color: white;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  color: #374151;
+  border-radius: 50%;   
   cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+
+  &:hover {
+    background: #f3f4f6;
+  }
 `
 
 const Title = styled.h2`
   margin: 0;
+  font-size: 20px;   
+  font-weight: 600;
+  color: #111827;
 `
+
 
 export default function CalendarHeader({
   currentDate,
   onPrevMonth,
   onNextMonth
 }: Props) {
-  // ✅ Ensure currentDate is valid
   const safeDate =
     currentDate instanceof Date && !isNaN(currentDate.getTime())
       ? currentDate

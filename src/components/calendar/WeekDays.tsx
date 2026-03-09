@@ -3,15 +3,18 @@ import styled from "styled-components"
 const WeekContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  padding: 8px 0;
-  font-weight: 600;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
+  background: #f3f4f6;   
+  border-bottom: 1px solid #e5e7eb;
 `
 
 const Day = styled.div`
-  color: #666;
+  text-align: center;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 700;  
+  color: #374151;
 `
+
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 

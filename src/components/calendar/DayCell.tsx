@@ -6,6 +6,10 @@ import { useDroppable } from "@dnd-kit/core"
 import type { Task } from "../../features/tasks/types/taskTypes"
 import type { Holiday } from "../../features/holidays/holidayTypes"
 import TaskCard from "../task/TaskCard"
+import {
+  SortableContext,
+  verticalListSortingStrategy
+} from "@dnd-kit/sortable"
 
 type Props = {
   date: Date
@@ -16,17 +20,24 @@ type Props = {
 }
 
 const Cell = styled.div<{ $current: boolean }>`
-  border: 1px solid #eee;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
   padding: 6px;
-  background: ${({ $current }) => ($current ? "#fff" : "#f5f5f5")};
+  background: ${({ $current }) => ($current ? "white" : "#f9fafb")};
   display: flex;
   flex-direction: column;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #f3f4f6;   
+  }
 `
 
 const DateNumber = styled.div`
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 4px;
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 6px;
+  font-weight: 500;
 `
 
 const HolidayLabel = styled.div`
@@ -39,7 +50,7 @@ const HolidayLabel = styled.div`
 const TasksContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 6px;   
 `
 
 const TaskInput = styled.input`
@@ -57,8 +68,10 @@ export default function DayCell({ date, isCurrentMonth, tasks, onAddTask, holida
   const dateString = format(date, "yyyy-MM-dd")
 
   const { setNodeRef } = useDroppable({
-    id: dateString
-  })
+  id: dateString,
+  data: { type: "day" }
+})
+
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter" && title.trim()) {
@@ -73,11 +86,17 @@ export default function DayCell({ date, isCurrentMonth, tasks, onAddTask, holida
 
       {holiday && <HolidayLabel>{holiday.name}</HolidayLabel>}
 
-      <TasksContainer>
-        {tasks.map(task => (
-          <TaskCard key={task.id} task={task} />
-        ))}
-      </TasksContainer>
+<SortableContext
+  items={tasks.map(t => t.id)}   // ✅ must match TaskCard ids
+  strategy={verticalListSortingStrategy}
+>
+  <TasksContainer>
+    {tasks.map(task => (
+      <TaskCard key={task.id} task={task} />
+    ))}
+  </TasksContainer>
+</SortableContext>
+
 
       <TaskInput
         placeholder="+ Add task"
