@@ -1,4 +1,3 @@
-// src/components/Calendar/DayCell.tsx
 import styled from "styled-components"
 import { format } from "date-fns"
 import { useState } from "react"
@@ -36,7 +35,6 @@ const DateNumber = styled.div`
   margin-bottom: 4px;
 `
 
-
 const HolidayLabel = styled.div`
   font-size: 10px;
   color: red;
@@ -47,13 +45,15 @@ const HolidayLabel = styled.div`
 const TasksContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;   
+  gap: 6px;
 `
+
 const CardCount = styled.span`
   font-size: 12px;
   color: #888;
   margin-left: 4px;
 `
+
 const TaskInput = styled.input`
   width: 100%;
   border: none;
@@ -64,15 +64,20 @@ const TaskInput = styled.input`
   border-radius: 3px;
 `
 
-export default function DayCell({ date, isCurrentMonth, tasks, onAddTask, holiday }: Props) {
+export default function DayCell({
+  date,
+  isCurrentMonth,
+  tasks,
+  onAddTask,
+  holiday
+}: Props) {
   const [title, setTitle] = useState("")
   const dateString = format(date, "yyyy-MM-dd")
 
   const { setNodeRef } = useDroppable({
-  id: dateString,
-  data: { type: "day" }
-})
-
+    id: dateString,
+    data: { type: "day" }
+  })
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter" && title.trim()) {
@@ -81,26 +86,28 @@ export default function DayCell({ date, isCurrentMonth, tasks, onAddTask, holida
     }
   }
 
+  // ✅ sort tasks by order before rendering
+  const sortedTasks = [...tasks].sort((a, b) => a.order - b.order)
+
   return (
     <Cell ref={setNodeRef} $current={isCurrentMonth}>
       <DateNumber>
-  {format(date, "d")}
-  {tasks.length > 0 && <CardCount>{tasks.length} card</CardCount>}
-</DateNumber>
+        {format(date, "d")}
+        {tasks.length > 0 && <CardCount>{tasks.length} card</CardCount>}
+      </DateNumber>
 
       {holiday && <HolidayLabel>{holiday.name}</HolidayLabel>}
 
-<SortableContext
-  items={tasks.map(t => t.id)}   // ✅ must match TaskCard ids
-  strategy={verticalListSortingStrategy}
->
-  <TasksContainer>
-    {tasks.map(task => (
-      <TaskCard key={task.id} task={task} />
-    ))}
-  </TasksContainer>
-</SortableContext>
-
+      <SortableContext
+        items={sortedTasks.map(t => t.id)} 
+        strategy={verticalListSortingStrategy}
+      >
+        <TasksContainer>
+          {sortedTasks.map(task => (
+            <TaskCard key={task.id} task={task} />
+          ))}
+        </TasksContainer>
+      </SortableContext>
 
       <TaskInput
         placeholder="+ Add task"

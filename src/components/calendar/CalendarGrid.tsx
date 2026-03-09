@@ -10,6 +10,7 @@ import { arrayMove } from "@dnd-kit/sortable"
 
 import type { Task } from "../../features/tasks/types/taskTypes"
 import type { Holiday } from "../../features/holidays/holidayTypes"
+import { updateTask } from "../../features/tasks/taskApi"
 
 const Grid = styled.div`
   display: grid;
@@ -71,25 +72,29 @@ export default function CalendarGrid({
     }
 
     if (over.data.current?.type === "task") {
+  const sameDayTasks = tasks.filter(t => t.date === activeTask.date)
 
-      const sameDayTasks = tasks.filter(t => t.date === activeTask.date)
+  const oldIndex = sameDayTasks.findIndex(t => t.id === activeId)
+  const newIndex = sameDayTasks.findIndex(t => t.id === overId)
 
-      const oldIndex = sameDayTasks.findIndex(t => t.id === activeId)
-      const newIndex = sameDayTasks.findIndex(t => t.id === overId)
+  if (oldIndex === -1 || newIndex === -1) return
 
-      if (oldIndex === -1 || newIndex === -1) return
+  const reordered = arrayMove(sameDayTasks, oldIndex, newIndex)
 
-      const reordered = arrayMove(sameDayTasks, oldIndex, newIndex)
-
-      const updated = tasks.map(task => {
-
-        const updatedTask = reordered.find(t => t.id === task.id)
-
-        return updatedTask ? updatedTask : task
-      })
-
-      setTasks(updated)
+  const updated = tasks.map(task => {
+    const reorderedTask = reordered.find(t => t.id === task.id)
+    if (reorderedTask) {
+      return { ...reorderedTask, order: reordered.indexOf(reorderedTask) }
     }
+    return task
+  })
+
+  setTasks(updated)
+  reordered.forEach((task, index) => {
+    updateTask({ ...task, order: index })
+  })
+}
+
   }
 
   return (
