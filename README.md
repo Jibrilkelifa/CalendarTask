@@ -57,6 +57,7 @@ Each task is stored with:
 title
 date
 order
+
 🔎 Search
 
 Users can search tasks instantly using the search bar.
@@ -201,7 +202,7 @@ scalable architecture
 
 # Installation
 1️⃣ Clone the repository
-git clone https://github.com/yourusername/calendar-task-app.git
+git clone https://github.com/yourusername/calendarTask.git
 🖥 Run Frontend
 cd frontend
 npm install
