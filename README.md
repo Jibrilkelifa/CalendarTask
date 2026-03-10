@@ -1,73 +1,252 @@
-# React + TypeScript + Vite
+📅 Calendar Task Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack calendar-based task management application where users can create, organize, and move tasks across calendar days using drag-and-drop.
 
-Currently, two official plugins are available:
+The application provides a clean monthly calendar interface and allows users to manage tasks efficiently.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Live Demo
 
-## React Compiler
+Frontend: (after deployment)
+Backend API: (after deployment)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# Project Overview
 
-## Expanding the ESLint configuration
+This project was built as part of a technical assessment to demonstrate full-stack development skills using modern technologies.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The application allows users to:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+View tasks inside a monthly calendar
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Create tasks for specific days
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Drag and drop tasks to reorder them
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Move tasks between different calendar days
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Persist tasks in a database
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Search tasks quickly
+
+View public holidays for each date
+
+The system follows a clean architecture structure to keep the code scalable and maintainable.
+
+# Features
+📅 Calendar View
+
+Monthly calendar layout
+
+Automatic generation of days for each month
+
+Navigation between months
+
+# Task Management
+
+Users can:
+
+Create tasks
+
+Update tasks
+
+Drag to reorder tasks
+
+Move tasks between days
+
+Each task is stored with:
+
+title
+date
+order
+🔎 Search
+
+Users can search tasks instantly using the search bar.
+
+# Drag and Drop
+
+Tasks can be rearranged or moved between dates using:
+
+dnd-kit
+
+# Holidays Integration
+
+Public holidays are fetched from:
+
+Nager.Date API
+
+# Database Persistence
+
+Tasks are stored in:
+
+MongoDB
+
+Using:
+
+Mongoose
+
+# Architecture
+
+The project is split into Frontend and Backend.
+
+# Frontend Architecture
+
+Built using:
+
+React
+
+TypeScript
+
+Vite
+
+styled-components
+
+Folder structure:
+
+src
+ ├ app
+ │   └ App.tsx
+ │
+ ├ components
+ │   ├ layout
+ │   │   └ TopBar.tsx
+ │   │
+ │   ├ calendar
+ │   │   ├ Calendar.tsx
+ │   │   ├ CalendarHeader.tsx
+ │   │   ├ CalendarGrid.tsx
+ │   │   ├ DayCell.tsx
+ │   │   └ WeekDays.tsx
+ │   │
+ │   ├ task
+ │   │   └ TaskCard.tsx
+ │   │
+ │   └ search
+ │       └ SearchBar.tsx
+ │
+ ├ features
+ │   ├ tasks
+ │   │   ├ api
+ │   │   │   └ taskApi.ts
+ │   │   ├ hooks
+ │   │   │   └ useTasks.ts
+ │   │   └ types
+ │   │       └ taskTypes.ts
+ │   │
+ │   └ holidays
+ │       ├ api
+ │       │   └ holidayApi.ts
+ │       └ types
+ │           └ holidayTypes.ts
+ │
+ ├ hooks
+ │   └ useCalendar.ts
+ │
+ ├ services
+ │   └ httpClient.ts
+ │
+ ├ utils
+ │   └ calendarUtils.ts
+ │
+ └ styles
+     └ globalStyles.ts
+
+This modular structure improves scalability and separation of concerns.
+
+⚙ Backend Architecture
+
+Built using:
+
+Node.js
+
+Express
+
+MongoDB
+
+Clean architecture layers:
+
+src
+ ├ config
+ │   └ db.js
+ │
+ ├ controllers
+ │   └ task.controller.js
+ │
+ ├ services
+ │   └ task.service.js
+ │
+ ├ repositories
+ │   └ task.repository.js
+ │
+ ├ dtos
+ │   └ task.dto.js
+ │
+ ├ models
+ │   └ task.model.js
+ │
+ ├ routes
+ │   └ task.routes.js
+ │
+ ├ middlewares
+ │   └ error.middleware.js
+ │
+ └ utils
+     └ asyncHandler.js
+
+This layered structure helps maintain:
+
+separation of responsibilities
+
+easier testing
+
+scalable architecture
+
+# Installation
+1️⃣ Clone the repository
+git clone https://github.com/yourusername/calendar-task-app.git
+🖥 Run Frontend
+cd frontend
+npm install
+npm run dev
+
+Frontend runs on:
+
+http://localhost:5173
+🖥 Run Backend
+cd backend
+npm install
+npm run dev
+
+Backend runs on:
+
+http://localhost:5000
+🗄 Database Setup
+
+Install:
+
+MongoDB
+
+Create .env file:
+
+MONGO_URI=mongodb://127.0.0.1:27017/calendar_tasks
+📡 API Endpoints
+Get tasks
+GET /tasks
+Create task
+POST /tasks
+
+Example body:
+
+{
+ "title": "Finish report",
+ "date": "2026-03-10",
+ "order": 0
+}
+Update task
+PUT /tasks/:id
+
+Used for:
+
+updating task
+
+changing order
+
+moving task to another day
