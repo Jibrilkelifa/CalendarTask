@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getTasks, createTask, updateTask } from "../api/taskApi"
+import { getTasks, createTask } from "../api/taskApi"
 import type { Task } from "../types/taskTypes"
 
 export function useTasks() {
