@@ -20,26 +20,27 @@ const Button = styled.button`
   width: 36px;
   height: 36px;
   border: none;
-  background: #f3f4f6;        // light gray background
+  background: #f3f4f6;
   color: #374151;
-  border-radius: 50%;         // circular
+  border-radius: 50%;
   cursor: pointer;
   font-size: 18px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   transition: all 0.2s ease;
 
   &:hover {
-    background: #3b82f6;      // blue highlight
-    color: #ffffff;           // white arrow
+    background: #3b82f6;
+    color: white;
   }
 
   &:active {
-    transform: scale(0.95);   // click feedback
+    transform: scale(0.95);
   }
 `
-
 
 const Title = styled.h2`
   margin: 0;
@@ -48,13 +49,12 @@ const Title = styled.h2`
   color: #111827;
 `
 
-
-
 export default function CalendarHeader({
   currentDate,
   onPrevMonth,
   onNextMonth
 }: Props) {
+
   const safeDate =
     currentDate instanceof Date && !isNaN(currentDate.getTime())
       ? currentDate
@@ -62,9 +62,15 @@ export default function CalendarHeader({
 
   return (
     <Header>
+
       <Button onClick={onPrevMonth}>◀</Button>
-      <Title>{format(safeDate, "MMMM yyyy")}</Title>
+
+      <Title>
+        {format(safeDate, "MMMM yyyy")}
+      </Title>
+
       <Button onClick={onNextMonth}>▶</Button>
+
     </Header>
   )
 }

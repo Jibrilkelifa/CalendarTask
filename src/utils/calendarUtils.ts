@@ -1,4 +1,3 @@
-
 import {
   startOfMonth,
   endOfMonth,
@@ -6,6 +5,7 @@ import {
   endOfWeek,
   addDays
 } from "date-fns"
+
 export type CalendarDay = {
   date: Date
   isCurrentMonth: boolean

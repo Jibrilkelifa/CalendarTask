@@ -8,7 +8,7 @@ const WeekContainer = styled.div`
 `
 
 const Day = styled.div`
-  text-align: centre;
+  text-align: center;
   padding: 6px 8px;
   font-size: 12px;
   font-weight: 600;
@@ -16,16 +16,17 @@ const Day = styled.div`
   width: 100%;
 `
 
-
-
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
 export default function WeekDays() {
+
   return (
     <WeekContainer>
+
       {days.map(day => (
         <Day key={day}>{day}</Day>
       ))}
+
     </WeekContainer>
   )
 }

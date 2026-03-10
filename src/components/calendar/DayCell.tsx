@@ -2,9 +2,12 @@ import styled from "styled-components"
 import { format } from "date-fns"
 import { useState } from "react"
 import { useDroppable } from "@dnd-kit/core"
+
 import type { Task } from "../../features/tasks/types/taskTypes"
-import type { Holiday } from "../../features/holidays/holidayTypes"
+import type { Holiday } from "../../features/holidays/types/holidayTypes"
+
 import TaskCard from "../task/TaskCard"
+
 import {
   SortableContext,
   verticalListSortingStrategy
@@ -23,10 +26,9 @@ const Cell = styled.div<{ $current: boolean }>`
   border-bottom: 1px solid #d6d6d6;
   padding: 8px;
   background: ${({ $current }) => ($current ? "#e9e9e9" : "#f2f2f2")};
+
   display: flex;
   flex-direction: column;
-  position: relative;
-  
 `
 
 const DateNumber = styled.div`
@@ -72,7 +74,9 @@ export default function DayCell({
   onAddTask,
   holiday
 }: Props) {
+
   const [title, setTitle] = useState("")
+
   const dateString = format(date, "yyyy-MM-dd")
 
   const { setNodeRef } = useDroppable({
@@ -81,33 +85,47 @@ export default function DayCell({
   })
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+
     if (e.key === "Enter" && title.trim()) {
       onAddTask(title, dateString)
       setTitle("")
     }
   }
 
-  // ✅ sort tasks by order before rendering
   const sortedTasks = [...tasks].sort((a, b) => a.order - b.order)
 
   return (
     <Cell ref={setNodeRef} $current={isCurrentMonth}>
+
       <DateNumber>
         {format(date, "d")}
-        {tasks.length > 0 && <CardCount>{tasks.length} card</CardCount>}
+        {tasks.length > 0 && (
+          <CardCount>{tasks.length} card</CardCount>
+        )}
       </DateNumber>
 
-      {holiday && <HolidayLabel>{holiday.name}</HolidayLabel>}
+      {holiday && (
+        <HolidayLabel>
+          {holiday.name}
+        </HolidayLabel>
+      )}
 
       <SortableContext
-        items={sortedTasks.map(t => t.id)} 
+        items={sortedTasks.map(t => t.id)}
         strategy={verticalListSortingStrategy}
       >
+
         <TasksContainer>
+
           {sortedTasks.map(task => (
-            <TaskCard key={task.id} task={task} />
+            <TaskCard
+              key={task.id}
+              task={task}
+            />
           ))}
+
         </TasksContainer>
+
       </SortableContext>
 
       <TaskInput
@@ -116,6 +134,7 @@ export default function DayCell({
         onChange={(e) => setTitle(e.target.value)}
         onKeyDown={handleKeyDown}
       />
+
     </Cell>
   )
 }

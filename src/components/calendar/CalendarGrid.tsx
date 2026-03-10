@@ -9,8 +9,8 @@ import type { DragEndEvent } from "@dnd-kit/core"
 import { arrayMove } from "@dnd-kit/sortable"
 
 import type { Task } from "../../features/tasks/types/taskTypes"
-import type { Holiday } from "../../features/holidays/holidayTypes"
-import { updateTask } from "../../features/tasks/taskApi"
+import type { Holiday } from "../../features/holidays/types/holidayTypes"
+import { updateTask } from "../../features/tasks/api/taskApi"
 
 const Grid = styled.div`
   display: grid;
@@ -46,10 +46,15 @@ export default function CalendarGrid({
 
   const days = generateMonthGrid(currentDate)
 
+  const tasksByDate = tasks.reduce((acc, task) => {
+    if (!acc[task.date]) acc[task.date] = []
+    acc[task.date].push(task)
+    return acc
+  }, {} as Record<string, Task[]>)
+
   function handleDragEnd(event: DragEndEvent) {
 
     const { active, over } = event
-
     if (!over) return
 
     const activeId = active.id as string
@@ -58,9 +63,10 @@ export default function CalendarGrid({
     const activeTask = tasks.find(t => t.id === activeId)
     if (!activeTask) return
 
+    // Move task to another day
     if (over.data.current?.type === "day") {
 
-      const newDate = over.id as string
+      const newDate = overId
 
       setTasks(prev =>
         prev.map(t =>
@@ -68,33 +74,43 @@ export default function CalendarGrid({
         )
       )
 
+      updateTask({
+        ...activeTask,
+        date: newDate
+      })
+
       return
     }
 
+    // Reorder inside same day
     if (over.data.current?.type === "task") {
-  const sameDayTasks = tasks.filter(t => t.date === activeTask.date)
 
-  const oldIndex = sameDayTasks.findIndex(t => t.id === activeId)
-  const newIndex = sameDayTasks.findIndex(t => t.id === overId)
+      const sameDayTasks = tasks.filter(t => t.date === activeTask.date)
 
-  if (oldIndex === -1 || newIndex === -1) return
+      const oldIndex = sameDayTasks.findIndex(t => t.id === activeId)
+      const newIndex = sameDayTasks.findIndex(t => t.id === overId)
 
-  const reordered = arrayMove(sameDayTasks, oldIndex, newIndex)
+      if (oldIndex === -1 || newIndex === -1) return
 
-  const updated = tasks.map(task => {
-    const reorderedTask = reordered.find(t => t.id === task.id)
-    if (reorderedTask) {
-      return { ...reorderedTask, order: reordered.indexOf(reorderedTask) }
+      const reordered = arrayMove(sameDayTasks, oldIndex, newIndex)
+
+      const updated = tasks.map(task => {
+        const reorderedTask = reordered.find(t => t.id === task.id)
+        if (reorderedTask) {
+          return {
+            ...reorderedTask,
+            order: reordered.indexOf(reorderedTask)
+          }
+        }
+        return task
+      })
+
+      setTasks(updated)
+
+      reordered.forEach((task, index) => {
+        updateTask({ ...task, order: index })
+      })
     }
-    return task
-  })
-
-  setTasks(updated)
-  reordered.forEach((task, index) => {
-    updateTask({ ...task, order: index })
-  })
-}
-
   }
 
   return (
@@ -107,7 +123,7 @@ export default function CalendarGrid({
 
           const dayString = format(day.date, "yyyy-MM-dd")
 
-          const dayTasks = tasks.filter(task => task.date === dayString)
+          const dayTasks = tasksByDate[dayString] || []
 
           const holiday = holidays.find(h => h.date === dayString)
 
