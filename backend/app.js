@@ -7,6 +7,10 @@ const errorMiddleware = require("./middlewares/error.middleware")
 const app = express()
 
 app.use(cors({ origin: "*" }))
+app.get("/", (req, res) => {
+  res.send("Backend is running ")
+})
+
 
 app.use(express.json())
 
